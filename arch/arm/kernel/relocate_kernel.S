@@ -102,12 +102,6 @@ loop:	b	loop
 	mov	r1, #0
 	str	r1, [r0, #0x820]  @ PSHOLD_CTL_SU
 loop:	b	loop
-#elif defined(CONFIG_ARCH_MSM8974)
-	/* Hard reset via PMIC, decompressor jumps to kernel. */
-	ldr	r0, =MSM8974_TLMM_PHYS
-	mov	r1, #0
-	str	r1, [r0, #0x820]  @ PSHOLD_CTL_SU
-loop:	b	loop
 #else
 #error "No reboot method defined for hardboot."
 #endif

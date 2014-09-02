@@ -167,12 +167,12 @@ start:
  * (or rather, the remainder of it since everything up to here has already
  * been executed).
  *
- * Vojtech Bocek <vbocek@gmail.com>: I've moved atags copying from guest kernel to
- * the host and rewrote it from C to assembler in order to remove the need
- * for guest kernel to be patched. I don't know assembler very well, so it
- * doesn't look very good and I have no idea if I didn't accidentally break
- * something, causing problems down the road. It's worked every time and I
- * didn't notice any problem so far though.
+ * Vojtech Bocek <vbocek@gmail.com>: I've moved atags copying from guest
+ * kernel to the host and rewrote it from C to assembler in order to remove
+ * the need for guest kernel to be patched. I don't know assembler very well,
+ * so it doesn't look very good and I have no idea if I didn't accidentally
+ * break something, causing problems down the road. It's worked every time
+ * and I didn't notice any problems so far though.
  *
  * r4: zreladdr (kernel start)
  * r8: kexec_boot_atags
@@ -224,7 +224,6 @@ catags_cpy:
 
 no_atags_cpy:
 		/* Load boot arguments and jump to kexec kernel. */
-		ldr	r0, [r3, #12]			@ kexec_boot_atags (r2: boot_atags)
 		ldr	r1, [r3, #8]			@ kexec_mach_type
 		ldr	pc, [r3, #4]			@ kexec_start_address
 
