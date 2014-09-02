@@ -9,6 +9,8 @@
   #include <mach/iomap.h>
 #elif defined(CONFIG_ARCH_APQ8064)
   #include <mach/msm_iomap.h>
+#elif defined(CONFIG_ARCH_MSM8974)
+  #include <mach/msm_iomap-8974.h>
 #endif
 #endif
 
@@ -99,6 +101,12 @@ loop:	b	loop
 #elif defined(CONFIG_ARCH_APQ8064)
 	/* Restart using the PMIC chip, see mach-msm/restart.c */
 	ldr	r0, =APQ8064_TLMM_PHYS
+	mov	r1, #0
+	str	r1, [r0, #0x820]  @ PSHOLD_CTL_SU
+loop:	b	loop
+#elif defined(CONFIG_ARCH_MSM8974)
+	/* Hard reset via PMIC, decompressor jumps to kernel. */
+	ldr	r0, =MSM8974_TLMM_PHYS
 	mov	r1, #0
 	str	r1, [r0, #0x820]  @ PSHOLD_CTL_SU
 loop:	b	loop

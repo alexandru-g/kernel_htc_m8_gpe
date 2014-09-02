@@ -86,6 +86,10 @@
 #include <linux/android_ediagpmem.h>
 #endif
 
+#ifdef CONFIG_KEXEC_HARDBOOT
+#include <linux/memblock.h>
+#endif
+
 #if defined(CONFIG_FB_MSM_MDSS_HDMI_MHL_SII8240_SII8558) && defined(CONFIG_HTC_MHL_DETECTION)
 #include "../../../drivers/video/msm/mdss/sii8240_8558/mhl_platform.h"
 #endif
@@ -102,6 +106,7 @@ static int mhl_usb_sw_gpio;
 #else
 #define HTC_8974_PERSISTENT_RAM_SIZE (SZ_1M - SZ_128K)
 #endif
+#define HTC_8974_RAM_CONSOLE_SIZE    HTC_8974_PERSISTENT_RAM_SIZE
 
 static struct persistent_ram_descriptor htc_8974_persistent_ram_descs[] = {
 	{
@@ -707,9 +712,9 @@ void __init htc_8974_init_early(void)
 	// Reserve space for hardboot page
 	int ret = memblock_remove(HTC_8974_HARDBOOT_PHYS, HTC_8974_HARDBOOT_SIZE);
 	if(!ret)
-		pr_info("Hardboot page reserved at 0x%X\n", start);
+		pr_info("Hardboot page reserved at 0x%X\n", HTC_8974_HARDBOOT_PHYS);
 	else
-		pr_err("Failed to reserve space for hardboot page at 0x%X!\n", start);
+		pr_err("Failed to reserve space for hardboot page at 0x%X!\n", HTC_8974_HARDBOOT_PHYS);
 #endif
 	persistent_ram_early_init(&htc_8974_persistent_ram);
 
