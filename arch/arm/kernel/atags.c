@@ -85,6 +85,7 @@ static int __init init_atags_procfs(void)
 	memcpy(b->data, atags_copy, size);
 
 	tags_entry = proc_create_data("atags", 0400, NULL, &atags_fops, b);
+	printk("created atags proc entry");
 
 	if (!tags_entry)
 		goto nomem;

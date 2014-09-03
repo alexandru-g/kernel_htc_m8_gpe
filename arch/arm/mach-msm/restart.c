@@ -497,8 +497,10 @@ void msm_restart(char mode, const char *cmd)
 #ifdef CONFIG_KEXEC_HARDBOOT
 static void msm_kexec_hardboot_hook(void)
 {
+	set_dload_mode(0);
 	// Set PMIC to restart-on-poweroff
 	pm8xxx_reset_pwr_off(1);
+	// qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
 }
 #endif
 
