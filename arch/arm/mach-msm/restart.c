@@ -49,6 +49,10 @@
 #include <linux/fs.h>
 #include <asm/uaccess.h>
 
+#ifdef CONFIG_KEXEC_HARDBOOT
+#include <asm/kexec.h>
+#endif
+
 #define HTC_SMEM_PARAM_BASE_ADDR 0xFBF0000
 
 #define HW_RST_ADDR 0x270
@@ -528,6 +532,16 @@ void msm_restart(char mode, const char *cmd)
 	printk(KERN_ERR "Restarting has failed\n");
 }
 
+#ifdef CONFIG_KEXEC_HARDBOOT
+static void msm_kexec_hardboot_hook(void)
+{
+	set_dload_mode(0);
+	// Set PMIC to restart-on-poweroff
+	pm8xxx_reset_pwr_off(1);
+	// qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
+}
+#endif
+
 static int __init msm_pmic_restart_init(void)
 {
 	int rc;
@@ -544,6 +558,10 @@ static int __init msm_pmic_restart_init(void)
 	} else {
 		pr_warn("no pmic restart interrupt specified\n");
 	}
+
+#ifdef CONFIG_KEXEC_HARDBOOT
+	kexec_hardboot_hook = msm_kexec_hardboot_hook;
+#endif
 
 	return 0;
 }
